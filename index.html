@@ -6,13 +6,14 @@
 <title>GuitarApp — Browser Guitar Studio</title>
 <meta name="description" content="Play guitar, learn chords, detect notes, tune, and explore scales in your browser.">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="learn.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0D0A07;--fb:#2C1810;--fret:#C0C0C0;--inlay:#D4C5A0;--accent:#E8A020;
 --wound:#B87333;--plain:#C8C8C8;--text1:#E8E0D0;--text2:#7A6E5E;--panel:#16120D;--border:#2E2820}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Oswald',sans-serif;background:var(--bg);color:var(--text1);display:flex;flex-direction:column}
-nav{display:flex;align-items:center;padding:0 16px;height:50px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;overflow-x:auto}
+nav{display:flex;align-items:center;padding:0 16px;height:50px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;overflow-x:auto;box-shadow:0 2px 12px rgba(232,160,32,.06)}
 .brand{font-size:20px;font-weight:600;color:var(--accent);white-space:nowrap;margin-right:16px}
 .tab-btn{background:none;border:none;color:var(--text2);font-family:'Oswald',sans-serif;font-size:14px;padding:8px 14px;cursor:pointer;border-radius:6px;transition:all .2s;white-space:nowrap}
 .tab-btn:hover{color:var(--text1);background:rgba(232,160,32,.1)}
@@ -139,6 +140,8 @@ main{padding:12px}
 <button class="tab-btn" data-tab="tuner">Tuner</button>
 <button class="tab-btn" data-tab="metronome">Metronome</button>
 <button class="tab-btn" data-tab="scales">Scales</button>
+<button class="tab-btn" data-tab="learn">📖 Learn</button>
+<button class="tab-btn" data-tab="songs">🎶 Songs</button>
 </nav>
 <main>
 <section id="tab-play" class="panel active">
@@ -220,11 +223,22 @@ main{padding:12px}
 <button id="play-scale-btn" class="btn accent">▶ Play Scale</button>
 </div>
 </section>
+<section id="tab-learn" class="panel">
+<h2>📖 Learn Guitar — Step by Step</h2>
+<p>Follow these beginner-friendly lessons. No experience needed!</p>
+<div id="learn-content"></div>
+</section>
+<section id="tab-songs" class="panel">
+<h2>🎶 Song Library — Play Your Favorites</h2>
+<p>Easy songs with chords, lyrics, strumming patterns & practice mode!</p>
+<div id="songs-content"></div>
+</section>
 </main>
 <div id="fretboard-wrap">
 <div id="string-labels"></div>
 <div id="fretboard"></div>
 </div>
+<script src="learn.js"></script>
 <script>
 // === CONSTANTS ===
 const NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
@@ -895,6 +909,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   // Resize handler for timeline canvas
   window.addEventListener('resize',()=>{if(detectedNotes.length)renderTimeline()});
+  // Init Learn & Songs
+  initLearn(); initSongs();
 });
 
 </script>
