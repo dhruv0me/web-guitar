@@ -1,4 +1,4 @@
-// === LEARN & SONGS MODULE ===
+// === LEARN & SONGS MODULE (Enhanced with YouTube Music) ===
 
 // ── BEGINNER LESSONS ──
 const LESSONS = [
@@ -95,7 +95,7 @@ const LESSONS = [
   }
 ];
 
-// ── SONGS DATABASE ──
+// ── SONGS DATABASE (with YouTube Music links) ──
 const SONGS = [
   {
     id: 'paaro', title: 'Paaro', artist: 'Aditya Rikhari',
@@ -175,8 +175,68 @@ const SONGS = [
       { name: 'Verse', lyrics: 'Achha chalta hoon duaon mein yaad rakhna\nMere zikr ka zubaan pe swaad rakhna', chords: ['Am', 'Em', 'G', 'D'] },
       { name: 'Chorus', lyrics: 'Channa mereya mereya\nChanna mereya mereya', chords: ['Am', 'Em', 'G', 'D'] }
     ]
+  },
+  {
+    id: 'kabira', title: 'Kabira', artist: 'Arijit Singh & Tochi Raina',
+    difficulty: 'Easy', capo: 0, bpm: 90, strumPattern: 'D D U U D U',
+    chords: ['C', 'G', 'Am', 'F'],
+    sections: [
+      { name: 'Intro', chords: ['C', '—', 'G', '—'] },
+      { name: 'Verse', lyrics: 'Kabira maan ja\nRe maan ja, tu baat toh sun', chords: ['C', 'G', 'Am', 'F'] },
+      { name: 'Chorus', lyrics: 'Ban ja rani, main raja\nBan ja pari, main raaja', chords: ['C', 'G', 'Am', 'F'] }
+    ]
+  },
+  {
+    id: 'photograph', title: 'Photograph', artist: 'Ed Sheeran',
+    difficulty: 'Easy', capo: 0, bpm: 108, strumPattern: 'D D U U D U',
+    chords: ['Em', 'C', 'G', 'D'],
+    sections: [
+      { name: 'Verse', lyrics: 'Loving can hurt, loving can hurt sometimes\nBut it\'s the only thing that I know', chords: ['Em', 'C', 'G', 'D'] },
+      { name: 'Chorus', lyrics: 'So you can keep me\nInside the pocket of your ripped jeans', chords: ['Em', 'C', 'G', 'D'] }
+    ]
+  },
+  {
+    id: 'haan_tu_hain', title: 'Haan Tu Hain', artist: 'KK',
+    difficulty: 'Easy', capo: 0, bpm: 76, strumPattern: 'D D U U D U',
+    chords: ['Em', 'Am', 'C', 'D'],
+    sections: [
+      { name: 'Verse', lyrics: 'Haan tu hain, wahi dil ne jise apna kaha\nHaan tu hain, wahi dil ne jise samjha', chords: ['Em', 'Am', 'C', 'D'] },
+      { name: 'Chorus', lyrics: 'Haan tu hain...', chords: ['Em', 'Am', 'C', 'D'] }
+    ]
+  },
+  {
+    id: 'shape_of_you', title: 'Shape of You', artist: 'Ed Sheeran',
+    difficulty: 'Easy', capo: 0, bpm: 96, strumPattern: 'D D U U D U',
+    chords: ['Am', 'Em', 'G', 'C'],
+    sections: [
+      { name: 'Verse', lyrics: 'I\'m in love with the shape of you\nWe push and pull like a magnet do', chords: ['Am', 'Em', 'G', 'C'] },
+      { name: 'Chorus', lyrics: 'I\'m in love with your body\nOh I, oh I, oh I', chords: ['Am', 'Em', 'G', 'C'] }
+    ]
   }
 ];
+
+// ── YOUTUBE MUSIC HELPERS ──
+const YT_MUSIC_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 22.08C6.432 22.08 1.92 17.568 1.92 12S6.432 1.92 12 1.92 22.08 6.432 22.08 12 17.568 22.08 12 22.08zM9.6 16.8l7.2-4.8-7.2-4.8v9.6z"/></svg>`;
+
+function getYTMusicSearchURL(title, artist) {
+  return `https://music.youtube.com/search?q=${encodeURIComponent(title + ' ' + artist)}`;
+}
+
+function getYTSearchURL(title, artist) {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' ' + artist + ' guitar chords')}`;
+}
+
+function openYTMusic(title, artist) {
+  window.open(getYTMusicSearchURL(title, artist), '_blank');
+}
+
+function searchYTFromInput() {
+  const input = document.getElementById('yt-custom-search');
+  if (input && input.value.trim()) {
+    const url = `https://music.youtube.com/search?q=${encodeURIComponent(input.value.trim())}`;
+    window.open(url, '_blank');
+  }
+}
 
 // ── PROGRESS TRACKING ──
 function getProgress() {
@@ -308,8 +368,19 @@ function initSongs() {
 function renderSongsList() {
   const container = document.getElementById('songs-content');
   let html = `<div class="songs-filter">
-    <input type="text" id="song-search" class="song-search-input" placeholder="🔍 Search songs..." oninput="filterSongs()">
-  </div><div class="songs-grid" id="songs-grid">`;
+    <input type="text" id="song-search" class="song-search-input" placeholder="🔍 Search songs by name or artist..." oninput="filterSongs()">
+  </div>
+  
+  <!-- YouTube Music Quick Search -->
+  <div class="song-yt-section" style="margin-bottom:18px">
+    <div class="yt-section-title">${YT_MUSIC_SVG} Find Any Song on YouTube Music</div>
+    <div class="yt-search-row">
+      <input type="text" id="yt-custom-search" class="yt-search-input" placeholder="Search any song, artist, or album...">
+      <button class="yt-search-btn" onclick="searchYTFromInput()">🔍 Search</button>
+    </div>
+  </div>
+  
+  <div class="songs-grid" id="songs-grid">`;
 
   SONGS.forEach((song, i) => {
     const diffClass = song.difficulty === 'Easy' ? 'diff-easy' : song.difficulty === 'Medium' ? 'diff-med' : 'diff-hard';
@@ -323,6 +394,7 @@ function renderSongsList() {
         <div class="song-card-artist">${song.artist}</div>
         <div class="song-card-chords">${song.chords.map(c => `<span class="song-chord-tag">${c}</span>`).join('')}</div>
         <div class="song-card-strum">Pattern: ${song.strumPattern}</div>
+        <button class="song-yt-btn" onclick="event.stopPropagation();openYTMusic('${song.title.replace(/'/g,"\\'")}','${song.artist.replace(/'/g,"\\'")}')">${YT_MUSIC_SVG} Play on YT Music</button>
       </div>`;
   });
   html += '</div>';
@@ -359,6 +431,19 @@ function renderSongView() {
         </div>
       </div>
 
+      <!-- YouTube Music Integration -->
+      <div class="song-yt-section">
+        <div class="yt-section-title">${YT_MUSIC_SVG} Listen While You Practice</div>
+        <a href="${getYTMusicSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn">
+          ${YT_MUSIC_SVG}
+          Play "${song.title}" on YouTube Music
+        </a>
+        <div class="yt-or-text">— or search on YouTube —</div>
+        <a href="${getYTSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn" style="background:linear-gradient(135deg,#333,#222);box-shadow:0 4px 16px rgba(0,0,0,.3);font-size:13px;padding:10px 20px">
+          🔍 Find Guitar Tutorial on YouTube
+        </a>
+      </div>
+
       <div class="song-chords-needed">
         <div class="song-section-title">Chords Used</div>
         <div class="song-chord-pills">
@@ -392,7 +477,7 @@ function renderSongView() {
   html += `</div>
       <div class="song-practice-section">
         <div class="song-section-title">🎯 Practice Mode</div>
-        <p style="color:var(--text2);font-weight:300;margin-bottom:10px">Auto-cycles through chords at the song's tempo. Follow along!</p>
+        <p style="color:var(--text2);font-weight:300;margin-bottom:12px">Auto-cycles through chords at the song's tempo. Open YouTube Music in another tab and play along!</p>
         <button class="btn accent" id="song-practice-btn" onclick="toggleSongPractice()">▶ Start Practice</button>
         <div id="song-practice-highlight" class="song-practice-highlight"></div>
       </div>
@@ -421,15 +506,189 @@ function toggleSongPractice() {
 
   function tick() {
     const chord = allChords[songPracticeChordIdx % allChords.length];
+    const nextChord = allChords[(songPracticeChordIdx + 1) % allChords.length];
     document.getElementById('song-practice-highlight').innerHTML =
       `<div class="practice-now">Now: <strong>${chord}</strong></div>
-       <div class="practice-next">Next: ${allChords[(songPracticeChordIdx + 1) % allChords.length]}</div>`;
+       <div class="practice-next">Next: ${nextChord}</div>`;
     selectChord(chord);
     showChordOnFretboard(chord);
+    // Haptic feedback on chord change
+    if (navigator.vibrate) navigator.vibrate(30);
     songPracticeChordIdx++;
   }
   tick();
   songPracticeTimer = setInterval(tick, ms);
+}
+
+// ── MOBILE STRUM PAD ──
+function initStrumPad() {
+  const pad = document.getElementById('strum-pad');
+  if (!pad) return;
+  
+  const wrap = pad.querySelector('.strum-strings-wrap');
+  if (!wrap) return;
+
+  const stringNames = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
+  const heights = [4, 3.5, 3, 2, 1.5, 1];
+  const colors = ['#B87333', '#B87333', '#B87333', '#C8C8C8', '#C8C8C8', '#C8C8C8'];
+  
+  wrap.innerHTML = '';
+  
+  for (let s = 0; s < 6; s++) {
+    const div = document.createElement('div');
+    div.className = 'strum-string-touch';
+    div.style.setProperty('--sh', heights[s] + 'px');
+    div.style.setProperty('--sc', colors[s]);
+    div.innerHTML = `<span class="strum-note">${stringNames[s]}</span>`;
+    div.dataset.string = s;
+    
+    // Touch handling
+    div.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      onStrumTouch(s, e);
+    }, { passive: false });
+    
+    div.addEventListener('mousedown', (e) => {
+      onStrumTouch(s, e);
+    });
+    
+    wrap.appendChild(div);
+  }
+  
+  // Swipe strum detection
+  let strumStartY = null;
+  let strummedStrings = new Set();
+  
+  wrap.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (elem && elem.classList.contains('strum-string-touch')) {
+      const s = parseInt(elem.dataset.string);
+      if (!strummedStrings.has(s)) {
+        strummedStrings.add(s);
+        onStrumTouch(s, e);
+      }
+    }
+  }, { passive: false });
+  
+  wrap.addEventListener('touchend', () => {
+    strummedStrings.clear();
+  });
+}
+
+function onStrumTouch(stringIdx, e) {
+  if (typeof initAudio === 'function') initAudio();
+  
+  // Determine what fret to play
+  let fret = 0;
+  if (typeof currentChord !== 'undefined' && currentChord && typeof CHORDS !== 'undefined' && CHORDS[currentChord]) {
+    fret = CHORDS[currentChord][stringIdx];
+    if (fret < 0) return; // Don't play muted strings
+  }
+  
+  if (typeof playNote === 'function') playNote(stringIdx, fret);
+  if (typeof showPlayDot === 'function') showPlayDot(stringIdx, fret);
+  
+  // Visual feedback
+  const strEl = document.querySelector(`.strum-string-touch[data-string="${stringIdx}"]`);
+  if (strEl) {
+    strEl.classList.add('plucked');
+    setTimeout(() => strEl.classList.remove('plucked'), 200);
+    
+    // Ripple effect
+    const ripple = document.createElement('div');
+    ripple.className = 'strum-ripple';
+    const rect = strEl.getBoundingClientRect();
+    if (e.touches) {
+      ripple.style.left = (e.touches[0].clientX - rect.left - 15) + 'px';
+    } else {
+      ripple.style.left = (e.clientX - rect.left - 15) + 'px';
+    }
+    ripple.style.top = '50%';
+    ripple.style.transform = 'translateY(-50%)';
+    strEl.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 400);
+  }
+  
+  // Haptic feedback
+  if (navigator.vibrate) navigator.vibrate(15);
+  
+  // Update chord display
+  updateStrumChordDisplay();
+}
+
+function updateStrumChordDisplay() {
+  const display = document.getElementById('strum-chord-label');
+  if (display && typeof currentChord !== 'undefined' && currentChord) {
+    display.textContent = `Playing: ${currentChord}`;
+  } else if (display) {
+    display.textContent = 'Select a chord or tap strings freely';
+  }
+}
+
+// ── MOBILE NAV ──
+function initMobileNav() {
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!mobileNav) return;
+  
+  mobileNav.querySelectorAll('.mnav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      if (tab === 'more') {
+        openMoreSheet();
+        return;
+      }
+      // Update mobile nav active state
+      mobileNav.querySelectorAll('.mnav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Switch tab
+      if (typeof switchTab === 'function') switchTab(tab);
+      // Haptic
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+  });
+}
+
+function openMoreSheet() {
+  const sheet = document.getElementById('more-sheet');
+  if (sheet) {
+    sheet.classList.add('open');
+    // Close on overlay click
+    sheet.querySelector('.more-overlay')?.addEventListener('click', closeMoreSheet);
+  }
+}
+
+function closeMoreSheet() {
+  const sheet = document.getElementById('more-sheet');
+  if (sheet) sheet.classList.remove('open');
+}
+
+function selectToolFromSheet(tab) {
+  closeMoreSheet();
+  // Update mobile nav - remove active from all, don't add to any (since it's a "more" tool)
+  const mobileNav = document.getElementById('mobile-nav');
+  if (mobileNav) {
+    mobileNav.querySelectorAll('.mnav-btn').forEach(b => b.classList.remove('active'));
+    const moreBtn = mobileNav.querySelector('[data-tab="more"]');
+    if (moreBtn) moreBtn.classList.add('active');
+  }
+  if (typeof switchTab === 'function') switchTab(tab);
+  if (navigator.vibrate) navigator.vibrate(10);
+}
+
+// Sync mobile nav with desktop tab switches
+function syncMobileNav(tab) {
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!mobileNav) return;
+  const mainTabs = ['play', 'chords', 'learn', 'songs'];
+  mobileNav.querySelectorAll('.mnav-btn').forEach(b => {
+    if (mainTabs.includes(tab)) {
+      b.classList.toggle('active', b.dataset.tab === tab);
+    } else {
+      b.classList.toggle('active', b.dataset.tab === 'more');
+    }
+  });
 }
 
 // ── TOAST ──

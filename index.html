@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0D0A07">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>GuitarApp — Browser Guitar Studio</title>
 <meta name="description" content="Play guitar, learn chords, detect notes, tune, and explore scales in your browser.">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -122,12 +125,24 @@ font-size:10px;font-weight:600;z-index:2;position:relative;pointer-events:none;t
 .fret-number{position:absolute;top:-16px;font-family:'Courier New',monospace;font-size:10px;color:var(--text2);pointer-events:none}
 @media(max-width:768px){
 nav{padding:0 8px;height:44px}
-.brand{font-size:16px;margin-right:8px}
-.tab-btn{font-size:12px;padding:6px 8px}
-main{padding:12px}
+nav .tab-btn{display:none}
+.brand{font-size:18px;margin-right:8px}
+main{padding:12px 10px;padding-bottom:10px}
 .key-legend{display:none}
-.fret-cell{min-width:40px}
-#fretboard-wrap{height:35vh}
+.fret-cell{min-width:48px}
+#fretboard-wrap{height:26vh;min-height:120px}
+.panel h2{font-size:18px}
+.panel p{font-size:13px}
+.chord-btn{padding:10px 16px;font-size:16px;min-width:60px}
+.chord-info{flex-direction:column;align-items:stretch}
+#chord-diagram{min-width:unset}
+.tuner-dial{width:220px;height:220px}
+.tuner-note{font-size:38px}
+.metro-bpm{font-size:56px}
+#bpm-slider{width:160px}
+.detect-controls{flex-direction:column}
+.scale-controls{flex-direction:column;align-items:stretch}
+.scale-controls select{width:100%}
 }
 </style>
 </head>
