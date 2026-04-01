@@ -354,7 +354,26 @@ function renderLessonsList() {
   const total = LESSONS.length;
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
+  // Daily tips
+  const tips = [
+    'Press your fingertips right behind the fret wire (not on it) for the cleanest sound.',
+    'Practice chord changes slowly — speed will come naturally with muscle memory.',
+    'Keep your thumb behind the neck, roughly behind your middle finger.',
+    'Strum from your wrist, not your elbow. Your arm should be almost still.',
+    'Tune your guitar EVERY time you pick it up. Your ear will thank you.',
+    'If a string buzzes, you\'re probably not pressing hard enough or you\'re too far from the fret.',
+    'Practice for 15 minutes daily instead of 2 hours once a week.',
+    'Record yourself playing — you\'ll spot mistakes you can\'t hear in real time.',
+    'When learning a new chord, place fingers one at a time, then strum. Build speed gradually.',
+    'Take breaks! If your fingers hurt, stop and come back tomorrow. Calluses take 2-3 weeks.'
+  ];
+  const todayTip = tips[new Date().getDate() % tips.length];
+
   let html = `
+    <div class="daily-tip">
+      <div class="daily-tip-title">💡 Daily Practice Tip</div>
+      <div class="daily-tip-text">${todayTip}</div>
+    </div>
     <div class="progress-overview">
       <div class="progress-header">
         <span class="progress-title">Your Progress</span>
@@ -464,6 +483,14 @@ function renderSongsList() {
     <input type="text" id="song-search" class="song-search-input" placeholder="🔍 Search songs by name or artist..." oninput="filterSongs()">
   </div>
   
+  <div class="diff-filter">
+    <button class="diff-filter-btn active" onclick="filterByDifficulty('all')">All Songs</button>
+    <button class="diff-filter-btn" onclick="filterByDifficulty('Easy')">Easy</button>
+    <button class="diff-filter-btn" onclick="filterByDifficulty('Medium')">Medium</button>
+  </div>
+  
+  <div class="song-count">🎵 ${SONGS.length} songs available</div>
+  
   <!-- YouTube Music Quick Search with Embed -->
   <div class="song-yt-section" style="margin-bottom:18px">
     <div class="yt-section-title">${YT_MUSIC_SVG} Play Any Song from YouTube</div>
@@ -502,6 +529,24 @@ function filterSongs() {
     const match = card.dataset.title.includes(q) || card.dataset.artist.includes(q);
     card.style.display = match ? '' : 'none';
   });
+  updateSongCount();
+}
+
+function filterByDifficulty(diff) {
+  document.querySelectorAll('.diff-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(diff === 'all' ? 'All' : diff));
+  });
+  document.querySelectorAll('.song-card').forEach(card => {
+    if (diff === 'all') { card.style.display = ''; }
+    else { card.style.display = card.dataset.difficulty === diff ? '' : 'none'; }
+  });
+  updateSongCount();
+}
+
+function updateSongCount() {
+  const visible = document.querySelectorAll('.song-card:not([style*="display: none"])').length;
+  const counter = document.querySelector('.song-count');
+  if (counter) counter.textContent = `🎵 ${visible} song${visible !== 1 ? 's' : ''} shown`;
 }
 
 function openSong(idx) {
