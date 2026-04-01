@@ -93,6 +93,29 @@ const LESSONS = [
       { text: 'Try the practice tool below — it highlights which chord to play!', img: '⬇️' }
     ]
   }
+  ,
+  {
+    id: 'transitions', title: '⚡ Chord Transition Drills', type: 'practice',
+    chordSequence: ['Em', 'Am', 'C', 'G', 'D'],
+    steps: [
+      { text: 'Chord transitions are THE most important skill. Let\'s drill the 5 essential beginner chords!', img: '💪' },
+      { text: 'Drill 1: Em → Am — Lift your index finger and add it to B string fret 1. Middle & ring shift down one string.', img: '🔄' },
+      { text: 'Drill 2: Am → C — Keep your index on B1. Move middle to D2, add ring to A3.', img: '🔄' },
+      { text: 'Drill 3: C → G — This is the hardest jump. Practice lifting ALL fingers and placing the new shape.', img: '🏋️' },
+      { text: 'Drill 4: G → D — Another big jump. Collapse your hand down to strings D, G, B.', img: '🔄' },
+      { text: 'Golden Rule: Practice each transition 20 times slowly before speeding up. Use the metronome at 60 BPM!', img: '🥇' }
+    ]
+  },
+  {
+    id: 'fingerpicking', title: '🤏 Intro to Fingerpicking', type: 'info',
+    steps: [
+      { text: 'Fingerpicking uses your thumb (T) and fingers (I=index, M=middle, R=ring) instead of a pick.', img: '🖐️' },
+      { text: 'Thumb (T) plays bass strings: E2, A2, D3. Assign one finger each to G3(I), B3(M), E4(R).', img: '👆' },
+      { text: 'Pattern 1 (Travis Pick): T-I-M-I — Thumb plucks bass, then index, middle, index.', img: '1️⃣' },
+      { text: 'Pattern 2 (Arpeggio): T-I-M-R-M-I — Beautiful for ballads!', img: '2️⃣' },
+      { text: 'Start with the Em chord. Thumb on E2, then pick G3-B3-E4 slowly. Relax your hand!', img: '😌' }
+    ]
+  }
 ];
 
 // ── SONGS DATABASE (with YouTube Music links) ──
@@ -213,26 +236,57 @@ const SONGS = [
       { name: 'Chorus', lyrics: 'I\'m in love with your body\nOh I, oh I, oh I', chords: ['Am', 'Em', 'G', 'C'] }
     ]
   }
+  ,
+  {
+    id: 'raabta', title: 'Raabta (Kehte Hain Khuda)', artist: 'Arijit Singh',
+    difficulty: 'Easy', capo: 0, bpm: 76, strumPattern: 'D D U U D U',
+    chords: ['Em', 'C', 'G', 'D'],
+    sections: [
+      { name: 'Intro', chords: ['Em', '—', 'C', '—', 'G', '—', 'D', '—'] },
+      { name: 'Verse', lyrics: 'Kehte hain khuda ne is jahaan mein\nSabke liye kisi na kisi ko hai banaya', chords: ['Em', 'C', 'G', 'D'] },
+      { name: 'Chorus', lyrics: 'Raabta... raabta\nHai mujhse tera raabta', chords: ['Em', 'C', 'G', 'D'] }
+    ]
+  },
+  {
+    id: 'kal_ho_na_ho', title: 'Kal Ho Naa Ho', artist: 'Sonu Nigam',
+    difficulty: 'Easy', capo: 0, bpm: 82, strumPattern: 'D D U U D U',
+    chords: ['G', 'Em', 'C', 'D'],
+    sections: [
+      { name: 'Verse', lyrics: 'Har ghadi badal rahi hai roop zindagi\nChaav hai kabhi kabhi hai dhoop zindagi', chords: ['G', 'Em', 'C', 'D'] },
+      { name: 'Chorus', lyrics: 'Kal ho naa ho... ho na ho\nPal ho naa ho', chords: ['G', 'Em', 'C', 'D'] }
+    ]
+  },
+  {
+    id: 'someone_like_you', title: 'Someone Like You', artist: 'Adele',
+    difficulty: 'Easy', capo: 0, bpm: 68, strumPattern: 'D D U U D U',
+    chords: ['G', 'D', 'Em', 'C'],
+    sections: [
+      { name: 'Verse', lyrics: 'I heard that you\'re settled down\nThat you found a girl and you\'re married now', chords: ['G', 'D', 'Em', 'C'] },
+      { name: 'Chorus', lyrics: 'Never mind, I\'ll find someone like you\nI wish nothing but the best for you too', chords: ['G', 'D', 'Em', 'C'] }
+    ]
+  },
+  {
+    id: 'heeriye', title: 'Heeriye', artist: 'Jasleen Royal ft. Arijit Singh',
+    difficulty: 'Easy', capo: 0, bpm: 92, strumPattern: 'D U D U D U',
+    chords: ['Am', 'G', 'C', 'F'],
+    sections: [
+      { name: 'Verse', lyrics: 'Heeriye, meriya heeriye\nNi main tera haaye tu meri', chords: ['Am', 'G', 'C', 'F'] },
+      { name: 'Chorus', lyrics: 'Heeriye... heeriye\nDil mera sun', chords: ['Am', 'G', 'C', 'F'] }
+    ]
+  },
+  {
+    id: 'wonderwall', title: 'Wonderwall', artist: 'Oasis',
+    difficulty: 'Easy', capo: 'Fret 2', bpm: 87, strumPattern: 'D D U U D U',
+    chords: ['Em', 'G', 'D', 'A'],
+    sections: [
+      { name: 'Verse', lyrics: 'Today is gonna be the day\nThat they\'re gonna throw it back to you', chords: ['Em', 'G', 'D', 'A'] },
+      { name: 'Chorus', lyrics: 'Because maybe, you\'re gonna be the one that saves me\nAnd after all, you\'re my wonderwall', chords: ['Em', 'G', 'D', 'A'] }
+    ]
+  }
 ];
 
 // ── YOUTUBE MUSIC HELPERS ──
 const YT_MUSIC_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 22.08C6.432 22.08 1.92 17.568 1.92 12S6.432 1.92 12 1.92 22.08 6.432 22.08 12 17.568 22.08 12 22.08zM9.6 16.8l7.2-4.8-7.2-4.8v9.6z"/></svg>`;
-
-// Known YouTube video IDs for songs (curated for best guitar covers/originals)
-const YT_VIDEO_MAP = {
-  'paaro': 'dQw4w9WgXcQ',
-  'teri_mitti': 'dQw4w9WgXcQ',
-  'tum_hi_ho': 'dQw4w9WgXcQ',
-  'let_her_go': 'dQw4w9WgXcQ',
-  'perfect': 'dQw4w9WgXcQ',
-  'khairiyat': 'dQw4w9WgXcQ',
-  'roke_na': 'dQw4w9WgXcQ',
-  'channa_mereya': 'dQw4w9WgXcQ',
-  'kabira': 'dQw4w9WgXcQ',
-  'photograph': 'dQw4w9WgXcQ',
-  'haan_tu_hain': 'dQw4w9WgXcQ',
-  'shape_of_you': 'dQw4w9WgXcQ'
-};
 
 function getYTMusicSearchURL(title, artist) {
   return `https://music.youtube.com/search?q=${encodeURIComponent(title + ' ' + artist)}`;
@@ -243,6 +297,7 @@ function getYTSearchURL(title, artist) {
 }
 
 function getYTEmbedURL(query) {
+  // Use Invidious as a lightweight embed fallback with search
   return `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=0`;
 }
 
@@ -467,7 +522,7 @@ function renderSongView() {
         <div class="song-meta-row">
           <span class="song-diff ${song.difficulty === 'Easy' ? 'diff-easy' : 'diff-med'}">${song.difficulty}</span>
           <span class="song-meta-item">🎵 ${song.bpm} BPM</span>
-          ${song.capo ? `<span class="song-meta-item">Capo: ${song.capo === 0 ? 'None' : song.capo}</span>` : ''}
+          ${song.capo && song.capo !== 0 ? `<span class="song-meta-item">Capo: ${song.capo}</span>` : ''}
         </div>
       </div>
 

@@ -1,5 +1,10 @@
 /* ── LEARN & SONGS & MOBILE UI STYLES ── */
 
+/* Ambient Background Glow */
+@keyframes ambientPulse{0%,100%{opacity:.3}50%{opacity:.6}}
+.panel.active{position:relative}
+.panel.active::before{content:'';position:fixed;top:-30%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(232,160,32,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;animation:ambientPulse 8s ease-in-out infinite;z-index:-1}
+
 /* Progress Bar */
 .progress-overview{background:linear-gradient(135deg,rgba(26,21,15,.92),rgba(44,24,16,.88));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(232,160,32,.12);border-radius:18px;padding:22px 24px;margin-bottom:22px;box-shadow:0 8px 32px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.03)}
 .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -11,7 +16,9 @@
 
 /* Lesson Cards */
 .lessons-grid{display:flex;flex-direction:column;gap:10px}
-.lesson-card{display:flex;align-items:center;gap:14px;background:rgba(22,18,13,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent}
+.lesson-card{display:flex;align-items:center;gap:14px;background:rgba(22,18,13,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.lesson-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(232,160,32,.04),transparent);transition:left .6s}
+.lesson-card:hover::after,.lesson-card:active::after{left:100%}
 .lesson-card:hover,.lesson-card:active{border-color:var(--accent);transform:translateX(6px);background:rgba(232,160,32,.06);box-shadow:0 4px 24px rgba(232,160,32,.12)}
 .lesson-card.completed{opacity:.7;border-left:3px solid #50c850}
 .lesson-card-icon{font-size:30px;flex-shrink:0}
@@ -51,8 +58,10 @@
 .songs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .song-card{background:linear-gradient(145deg,rgba(22,18,13,.95),rgba(30,23,15,.95));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:18px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .song-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#e06030);opacity:0;transition:opacity .3s}
+.song-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(232,160,32,.06),transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
 .song-card:hover,.song-card:active{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.45)}
 .song-card:hover::before,.song-card:active::before{opacity:1}
+.song-card:hover::after,.song-card:active::after{opacity:1}
 .song-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .song-diff{font-size:11px;padding:4px 10px;border-radius:6px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
 .diff-easy{background:rgba(80,200,80,.15);color:#50c850}
@@ -130,6 +139,21 @@
 .song-practice-highlight{margin-top:14px;text-align:center}
 .practice-now{font-size:34px;color:var(--accent);margin-bottom:6px;animation:fadeSlideIn .25s cubic-bezier(.4,0,.2,1)}
 .practice-next{font-size:14px;color:var(--text2)}
+
+/* Daily Tip */
+.daily-tip{background:linear-gradient(135deg,rgba(0,180,180,.08),rgba(232,160,32,.06));border:1px solid rgba(0,180,180,.15);border-radius:16px;padding:18px 20px;margin-bottom:18px;position:relative;overflow:hidden}
+.daily-tip::before{content:'💡';position:absolute;right:14px;top:10px;font-size:28px;opacity:.25}
+.daily-tip-title{font-size:12px;font-weight:600;color:#00b4b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.daily-tip-text{font-size:14px;color:var(--text1);font-weight:300;line-height:1.6}
+
+/* Difficulty Filter Tabs */
+.diff-filter{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.diff-filter-btn{background:rgba(22,18,13,.8);border:1px solid var(--border);color:var(--text2);font-family:'Oswald',sans-serif;font-size:12px;padding:6px 16px;border-radius:20px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.diff-filter-btn:hover,.diff-filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(232,160,32,.1)}
+.diff-filter-btn.active{box-shadow:0 0 12px rgba(232,160,32,.15)}
+
+/* Song count badge */
+.song-count{font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:300}
 
 /* ── MOBILE BOTTOM NAV ── */
 #mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(13,10,7,.94);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid rgba(232,160,32,.1);padding:2px 0 0;box-shadow:0 -4px 28px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom,0)}
