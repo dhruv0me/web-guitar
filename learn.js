@@ -251,7 +251,7 @@ function openYTMusic(title, artist) {
 }
 
 function searchYTFromInput() {
-  const input = document.getElementById('yt-custom-search');
+  const input = document.getElementById('yt-global-search') || document.getElementById('yt-custom-search');
   if (input && input.value.trim()) {
     const url = `https://music.youtube.com/search?q=${encodeURIComponent(input.value.trim())}`;
     window.open(url, '_blank');
@@ -409,13 +409,15 @@ function renderSongsList() {
     <input type="text" id="song-search" class="song-search-input" placeholder="🔍 Search songs by name or artist..." oninput="filterSongs()">
   </div>
   
-  <!-- YouTube Music Quick Search -->
+  <!-- YouTube Music Quick Search with Embed -->
   <div class="song-yt-section" style="margin-bottom:18px">
-    <div class="yt-section-title">${YT_MUSIC_SVG} Find Any Song on YouTube Music</div>
-    <div class="yt-search-row">
-      <input type="text" id="yt-custom-search" class="yt-search-input" placeholder="Search any song, artist, or album...">
-      <button class="yt-search-btn" onclick="searchYTFromInput()">🔍 Search</button>
+    <div class="yt-section-title">${YT_MUSIC_SVG} Play Any Song from YouTube</div>
+    <div class="yt-embed-search-row">
+      <input type="text" id="yt-global-search" class="yt-embed-input" placeholder="Search any song, artist, or album...">
+      <button class="yt-embed-go" onclick="searchAndEmbedYT('yt-global-search','yt-global-player')">▶ Play</button>
     </div>
+    <div id="yt-global-player" style="margin-top:10px"></div>
+    <button class="yt-search-btn" onclick="searchYTFromInput()" style="margin-top:8px;width:100%">🎵 Open in YT Music Instead</button>
   </div>
   
   <div class="songs-grid" id="songs-grid">`;
