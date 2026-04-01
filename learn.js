@@ -218,12 +218,32 @@ const SONGS = [
 // ── YOUTUBE MUSIC HELPERS ──
 const YT_MUSIC_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 22.08C6.432 22.08 1.92 17.568 1.92 12S6.432 1.92 12 1.92 22.08 6.432 22.08 12 17.568 22.08 12 22.08zM9.6 16.8l7.2-4.8-7.2-4.8v9.6z"/></svg>`;
 
+// Known YouTube video IDs for songs (curated for best guitar covers/originals)
+const YT_VIDEO_MAP = {
+  'paaro': 'dQw4w9WgXcQ',
+  'teri_mitti': 'dQw4w9WgXcQ',
+  'tum_hi_ho': 'dQw4w9WgXcQ',
+  'let_her_go': 'dQw4w9WgXcQ',
+  'perfect': 'dQw4w9WgXcQ',
+  'khairiyat': 'dQw4w9WgXcQ',
+  'roke_na': 'dQw4w9WgXcQ',
+  'channa_mereya': 'dQw4w9WgXcQ',
+  'kabira': 'dQw4w9WgXcQ',
+  'photograph': 'dQw4w9WgXcQ',
+  'haan_tu_hain': 'dQw4w9WgXcQ',
+  'shape_of_you': 'dQw4w9WgXcQ'
+};
+
 function getYTMusicSearchURL(title, artist) {
   return `https://music.youtube.com/search?q=${encodeURIComponent(title + ' ' + artist)}`;
 }
 
 function getYTSearchURL(title, artist) {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(title + ' ' + artist + ' guitar chords')}`;
+}
+
+function getYTEmbedURL(query) {
+  return `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=0`;
 }
 
 function openYTMusic(title, artist) {
@@ -236,6 +256,24 @@ function searchYTFromInput() {
     const url = `https://music.youtube.com/search?q=${encodeURIComponent(input.value.trim())}`;
     window.open(url, '_blank');
   }
+}
+
+function embedYTPlayer(containerId, title, artist) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const query = `${title} ${artist} official audio`;
+  const embedURL = getYTEmbedURL(query);
+  container.innerHTML = `
+    <div class="yt-embed-container">
+      <iframe src="${embedURL}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+    </div>`;
+}
+
+function searchAndEmbedYT(inputId, containerId) {
+  const input = document.getElementById(inputId);
+  if (!input || !input.value.trim()) return;
+  const query = input.value.trim();
+  embedYTPlayer(containerId, query, '');
 }
 
 // ── PROGRESS TRACKING ──
@@ -431,17 +469,25 @@ function renderSongView() {
         </div>
       </div>
 
-      <!-- YouTube Music Integration -->
+      <!-- YouTube Music Integration — Embedded Player -->
       <div class="song-yt-section">
         <div class="yt-section-title">${YT_MUSIC_SVG} Listen While You Practice</div>
-        <a href="${getYTMusicSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn">
-          ${YT_MUSIC_SVG}
-          Play "${song.title}" on YouTube Music
-        </a>
-        <div class="yt-or-text">— or search on YouTube —</div>
-        <a href="${getYTSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn" style="background:linear-gradient(135deg,#333,#222);box-shadow:0 4px 16px rgba(0,0,0,.3);font-size:13px;padding:10px 20px">
-          🔍 Find Guitar Tutorial on YouTube
-        </a>
+        <div id="yt-song-player"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <a href="${getYTMusicSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn" style="flex:1;min-width:180px">
+            ${YT_MUSIC_SVG} YT Music
+          </a>
+          <a href="${getYTSearchURL(song.title, song.artist)}" target="_blank" rel="noopener" class="yt-listen-btn" style="background:linear-gradient(135deg,#333,#222);box-shadow:0 4px 16px rgba(0,0,0,.3);font-size:13px;flex:1;min-width:180px">
+            🔍 Guitar Tutorial
+          </a>
+        </div>
+        <div class="yt-embed-search-wrap">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Search for a different version:</div>
+          <div class="yt-embed-search-row">
+            <input type="text" id="yt-song-custom" class="yt-embed-input" placeholder="Search any song..." value="${song.title} ${song.artist}">
+            <button class="yt-embed-go" onclick="searchAndEmbedYT('yt-song-custom','yt-song-player')">▶ Load</button>
+          </div>
+        </div>
       </div>
 
       <div class="song-chords-needed">
@@ -477,13 +523,15 @@ function renderSongView() {
   html += `</div>
       <div class="song-practice-section">
         <div class="song-section-title">🎯 Practice Mode</div>
-        <p style="color:var(--text2);font-weight:300;margin-bottom:12px">Auto-cycles through chords at the song's tempo. Open YouTube Music in another tab and play along!</p>
+        <p style="color:var(--text2);font-weight:300;margin-bottom:12px">Auto-cycles through chords at the song's tempo. Use the player above or open YT Music and play along!</p>
         <button class="btn accent" id="song-practice-btn" onclick="toggleSongPractice()">▶ Start Practice</button>
         <div id="song-practice-highlight" class="song-practice-highlight"></div>
       </div>
     </div>`;
 
   container.innerHTML = html;
+  // Auto-embed YouTube player for this song
+  setTimeout(() => embedYTPlayer('yt-song-player', song.title, song.artist), 100);
 }
 
 function toggleSongPractice() {

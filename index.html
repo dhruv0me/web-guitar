@@ -253,6 +253,41 @@ main{padding:12px 10px;padding-bottom:10px}
 <div id="string-labels"></div>
 <div id="fretboard"></div>
 </div>
+
+<!-- Mobile Strum Pad -->
+<div id="strum-pad">
+<div class="strum-pad-label" id="strum-chord-label">Tap or swipe strings to play</div>
+<div class="strum-strings-wrap"></div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav id="mobile-nav">
+<div class="mnav-inner">
+<button class="mnav-btn active" data-tab="play"><span class="mnav-icon">🎸</span><span class="mnav-label">Play</span></button>
+<button class="mnav-btn" data-tab="chords"><span class="mnav-icon">🎵</span><span class="mnav-label">Chords</span></button>
+<button class="mnav-btn" data-tab="learn"><span class="mnav-icon">📖</span><span class="mnav-label">Learn</span></button>
+<button class="mnav-btn" data-tab="songs"><span class="mnav-icon">🎶</span><span class="mnav-label">Songs</span></button>
+<button class="mnav-btn" data-tab="more"><span class="mnav-icon">⚙️</span><span class="mnav-label">More</span></button>
+</div>
+</nav>
+
+<!-- More Tools Bottom Sheet -->
+<div id="more-sheet">
+<div class="more-overlay"></div>
+<div class="more-content">
+<div class="more-handle"></div>
+<div class="more-title">More Tools</div>
+<div class="more-grid">
+<div class="more-tool-btn" onclick="selectToolFromSheet('detect')"><span class="more-tool-icon">🎧</span><div class="more-tool-info"><span class="more-tool-name">Note Detect</span><span class="more-tool-desc">Detect from audio</span></div></div>
+<div class="more-tool-btn" onclick="selectToolFromSheet('tuner')"><span class="more-tool-icon">🎯</span><div class="more-tool-info"><span class="more-tool-name">Tuner</span><span class="more-tool-desc">Tune your guitar</span></div></div>
+<div class="more-tool-btn" onclick="selectToolFromSheet('metronome')"><span class="more-tool-icon">🥁</span><div class="more-tool-info"><span class="more-tool-name">Metronome</span><span class="more-tool-desc">Keep the beat</span></div></div>
+<div class="more-tool-btn" onclick="selectToolFromSheet('scales')"><span class="more-tool-icon">🎼</span><div class="more-tool-info"><span class="more-tool-name">Scales</span><span class="more-tool-desc">Visualize scales</span></div></div>
+</div>
+</div>
+</div>
+
+<div id="toast-notif"></div>
+
 <script src="learn.js"></script>
 <script>
 // === CONSTANTS ===
@@ -433,6 +468,7 @@ function switchTab(tab){
   clearOverlayDots('scale-dot'); clearOverlayDots('root-dot'); clearOverlayDots('chord-dot');
   if(tab==='scales') updateScaleDisplay();
   if(tab==='chords' && currentChord) showChordOnFretboard(currentChord);
+  if(typeof syncMobileNav==='function') syncMobileNav(tab);
 }
 
 // === KEYBOARD HANDLING ===
@@ -924,8 +960,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   // Resize handler for timeline canvas
   window.addEventListener('resize',()=>{if(detectedNotes.length)renderTimeline()});
-  // Init Learn & Songs
+  // Init Learn & Songs & Mobile
   initLearn(); initSongs();
+  initStrumPad(); initMobileNav();
 });
 
 </script>
